@@ -246,9 +246,6 @@ A flutter package which will help you to generate pin code fields with beautiful
 
   /// Enable auto unfocus
   final bool autoUnfocus;
-
-  /// Builds separator children
-  final IndexedWidgetBuilder? separatorBuilder;
 ```
 
 **PinTheme**
