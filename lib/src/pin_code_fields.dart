@@ -203,6 +203,7 @@ class PinCodeTextField extends StatefulWidget {
 
   /// add prefill box at last
   final String suffixBoxText;
+  final bool isSuffixEmptyBox;
 
   PinCodeTextField({
     Key? key,
@@ -268,6 +269,7 @@ class PinCodeTextField extends StatefulWidget {
     this.useExternalAutoFillGroup = false,
     this.scrollPadding = const EdgeInsets.all(20),
     this.suffixBoxText = '',
+    this.isSuffixEmptyBox = false,
   })  : assert(obscuringCharacter.isNotEmpty),
         super(key: key);
 
@@ -897,40 +899,51 @@ class _PinCodeTextFieldState extends State<PinCodeTextField>
       );
     }
     for (int i = 0; i < widget.suffixBoxText.length ; i++) {
-      result.add(
-        Container(
-          padding: _pinTheme.fieldOuterPadding,
-          width: _pinTheme.fieldWidth,
-          height: _pinTheme.fieldHeight,
-          decoration: BoxDecoration(
-            color: widget.enableActiveFill
-                ? _getFillColorFromIndex(i)
-                : Colors.transparent,
-            boxShadow: widget.boxShadows,
-            shape: _pinTheme.shape == PinCodeFieldShape.circle
-                ? BoxShape.circle
-                : BoxShape.rectangle,
-            borderRadius: borderRadius,
-            border: _pinTheme.shape == PinCodeFieldShape.underline
-                ? Border(
-              bottom: BorderSide(
+      if (widget.isSuffixEmptyBox) {
+        result.add(
+          Container(
+            padding: _pinTheme.fieldOuterPadding,
+            width: _pinTheme.fieldWidth,
+            height: _pinTheme.fieldHeight,
+            color: Colors.transparent,
+          ),
+        );
+      } else {
+        result.add(
+          Container(
+            padding: _pinTheme.fieldOuterPadding,
+            width: _pinTheme.fieldWidth,
+            height: _pinTheme.fieldHeight,
+            decoration: BoxDecoration(
+              color: widget.enableActiveFill
+                  ? _getFillColorFromIndex(i)
+                  : Colors.transparent,
+              boxShadow: widget.boxShadows,
+              shape: _pinTheme.shape == PinCodeFieldShape.circle
+                  ? BoxShape.circle
+                  : BoxShape.rectangle,
+              borderRadius: borderRadius,
+              border: _pinTheme.shape == PinCodeFieldShape.underline
+                  ? Border(
+                bottom: BorderSide(
+                  color: _getColorFromIndex(i),
+                  width: _pinTheme.borderWidth,
+                ),
+              )
+                  : Border.all(
                 color: _getColorFromIndex(i),
                 width: _pinTheme.borderWidth,
               ),
-            )
-                : Border.all(
-              color: _getColorFromIndex(i),
-              width: _pinTheme.borderWidth,
+            ),
+            child: Center(
+              child: Text(
+                widget.suffixBoxText[i],
+                style: _textStyle,
+              ),
             ),
           ),
-          child: Center(
-            child: Text(
-              widget.suffixBoxText[i],
-              style: _textStyle,
-            ),
-          ),
-        ),
-      );
+        );
+      }
     }
     return result;
   }
